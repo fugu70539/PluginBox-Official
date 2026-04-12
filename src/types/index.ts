@@ -17,7 +17,8 @@ export interface Plugin {
 export interface UserData {
   id: string;
   username: string;
-  firstName?: string; // Добавлено для аватарки
+  firstName?: string;
+  photoUrl?: string; // ДОБАВЬ ЭТУ СТРОЧКУ
   plan: PlanType;
   activePlugins: string[];
 }
