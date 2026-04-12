@@ -12,12 +12,9 @@ type Tab = 'hub' | 'store' | 'socket';
 export default function HubView() {
   const [activeTab, setActiveTab] = useState<Tab>('hub');
   const { user, setUser } = useStore();
-  
-  // Состояния для хранения данных анимаций
   const [icons, setIcons] = useState<Record<string, any>>({});
 
   useEffect(() => {
-    // 1. Настройка Telegram
     const tg = typeof window !== 'undefined' ? (window as any).Telegram?.WebApp : null;
     if (tg) {
       tg.ready();
@@ -36,7 +33,6 @@ export default function HubView() {
       }
     }
 
-    // 2. Загрузка иконок через fetch (безопасно для билда)
     const loadIcons = async () => {
       try {
         const [hub, store, socket] = await Promise.all([
@@ -46,13 +42,14 @@ export default function HubView() {
         ]);
         setIcons({ hub, store, socket });
       } catch (e) {
-        console.error("Ошибка загрузки иконок:", e);
+        console.error("Lottie icons not found");
       }
     };
     loadIcons();
   }, []);
 
-  const hasPlugins = user?.activePlugins?.length > 0;
+  // ИСПРАВЛЕНИЕ ТУТ: Добавляем || 0, чтобы всегда было число
+  const hasPlugins = (user?.activePlugins?.length || 0) > 0;
   const userPlan = user?.plan || 'Free';
 
   const getSliderStyle = () => {
@@ -64,7 +61,7 @@ export default function HubView() {
   return (
     <div className="flex-1 flex flex-col relative bg-black overflow-hidden h-screen">
       
-      {/* HEADER */}
+      {/* HEADER с учетом Safe Area */}
       <div style={{ paddingTop: 'calc(env(safe-area-inset-top) + 50px)' }} className="px-6 flex items-center justify-between w-full z-10">
         <div className="flex items-center gap-3">
           <div className="relative w-9 h-9 overflow-hidden rounded-xl">
@@ -119,7 +116,7 @@ export default function HubView() {
                   <Image src="/Pics/EmptyHub.PNG" alt="Empty" fill className="object-contain" />
                 </div>
                 <h2 className="text-2xl font-bold mb-3">Your Hub is Empty</h2>
-                <p className="text-white/40 text-[15px] leading-relaxed max-w-[220px]">
+                <p className="text-white/40 text-[15px] leading-relaxed max-w-[240px]">
                   Explore the Store to find and install your first plugins.
                 </p>
                 <button 
