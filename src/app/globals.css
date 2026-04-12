@@ -4,7 +4,7 @@
 
 :root {
   --bg: #000;
-  --t-bg: rgba(25, 25, 27, 0.7); /* Прозрачность 0.7 */
+  --t-bg: rgba(25, 25, 27, 0.7); /* Прозрачность 0.7 для таббара */
   --act: #ffffff;
   --inact: #8e8e93;
   --pill: rgba(255, 255, 255, 0.1);
@@ -20,31 +20,53 @@ body {
   -webkit-font-smoothing: antialiased;
   user-select: none;
   -webkit-user-select: none;
+  -webkit-touch-callout: none;
   overflow: hidden;
   position: fixed;
   width: 100%;
   height: 100%;
+  overscroll-behavior: none;
 }
 
-/* Ультра-стекло */
+.white-glass-button {
+  background: linear-gradient(180deg, #ffffff 0%, #e2e2e2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  border-radius: 9999px;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+  @apply active:scale-95 transition-transform duration-200;
+}
+
+/* Улучшенное стекло */
 .glass-card {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.05); /* Очень легкий фон */
   backdrop-filter: blur(25px) saturate(180%);
   -webkit-backdrop-filter: blur(25px) saturate(180%);
-  border: 0.5px solid rgba(255, 255, 255, 0.08); /* Почти невидимый контур */
+  border: 0.5px solid rgba(255, 255, 255, 0.12); /* Тончайший контур */
 }
 
 .plan-badge {
-  background-color: rgba(0, 122, 255, 0.12);
-  padding: 2px 5px;
-  border-radius: 5px;
-  font-family: "Arial Rounded MT Bold", sans-serif;
+  background-color: rgba(0, 122, 255, 0.15);
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
   color: var(--apple-blue);
-  font-size: 8px;
+  font-size: 9px;
   text-transform: uppercase;
+  font-weight: bold;
 }
 
-/* Навигация со стеклом */
+.t-wrap {
+  position: fixed;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 1000;
+}
+
 .tbar {
   position: relative;
   background: var(--t-bg);
@@ -55,19 +77,27 @@ body {
   padding: 4px;
   width: 90%;
   max-width: 400px;
-  border: 0.5px solid rgba(255, 255, 255, 0.06);
-  height: 60px;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  height: 64px;
 }
 
-.white-glass-button {
-  background: linear-gradient(180deg, #ffffff 0%, #e2e2e2 100%);
+.t-item {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #000;
-  border-radius: 9999px;
-  @apply active:scale-95 transition-transform duration-200;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--inact);
+  transition: all 0.2s ease;
 }
+
+.t-item.active { color: var(--act); }
 
 .slid {
   position: absolute;
@@ -79,7 +109,11 @@ body {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Чтобы поиск был доступен для ввода */
+button, a {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
 input {
   user-select: text;
   -webkit-user-select: text;
