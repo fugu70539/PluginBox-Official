@@ -16,7 +16,7 @@ export default function Page() {
       <div className="flex-1 flex flex-col items-center justify-center z-10 w-full">
         <div className="relative w-64 h-64 mb-10">
           <Image 
-            src="/Pics/FacePic.PNG" 
+            src="/Pics/Main.PNG" 
             alt="Welcome" 
             fill 
             priority 
