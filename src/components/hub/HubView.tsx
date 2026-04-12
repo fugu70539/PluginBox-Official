@@ -9,7 +9,7 @@ type Tab = 'hub' | 'store' | 'socket';
 export default function HubView() {
   const [activeTab, setActiveTab] = useState<Tab>('hub');
   const { user } = useStore();
-  const hasPlugins = user?.activePlugins.length! > 0;
+  const hasPlugins = user?.activePlugins.length ? user.activePlugins.length > 0 : false;
 
   const getSliderPos = () => {
     if (activeTab === 'hub') return 'left: 4px; width: 32%;';
@@ -18,30 +18,44 @@ export default function HubView() {
   };
 
   return (
-    <div className="flex-1 flex flex-col relative bg-black">
-      {/* Контент в зависимости от вкладки */}
-      <div className="flex-1 flex flex-col items-center justify-center p-6">
+    <div className="flex-1 flex flex-col relative bg-black overflow-hidden">
+      <div className="flex-1 flex flex-col p-6 overflow-y-auto pb-32">
         {activeTab === 'hub' && (
-          <div className="w-full h-full flex flex-col items-center justify-center">
+          <div className="w-full flex flex-col items-center">
             {!hasPlugins ? (
-              <div className="glass-card w-full aspect-square rounded-[40px] flex flex-col items-center justify-center p-8 text-center">
-                <div className="relative w-48 h-48 mb-6">
-                  <Image src="/Pics/Duck.PNG" alt="Empty" fill className="object-contain" />
+              <div className="glass-card w-full min-h-[450px] rounded-[48px] flex flex-col items-center justify-center p-10 text-center mt-4">
+                <div className="relative w-56 h-56 mb-8">
+                  <Image 
+                    src="/Pics/EmptyHub.PNG" 
+                    alt="Empty State" 
+                    fill 
+                    priority
+                    className="object-contain" 
+                  />
                 </div>
-                <h2 className="text-xl font-bold mb-2">Пустовато...</h2>
-                <p className="text-white/50 text-sm">Добавь свой первый плагин в магазине</p>
+                <h2 className="text-2xl font-bold text-white mb-3">Your Hub is Empty</h2>
+                <p className="text-white/40 text-[15px] leading-relaxed max-w-[240px]">
+                  Explore the Store to find and install your first plugins.
+                </p>
+                <button 
+                  onClick={() => setActiveTab('store')}
+                  className="mt-8 px-8 py-3 bg-white text-black rounded-full font-bold text-sm active:scale-95 transition-transform"
+                >
+                  Go to Store
+                </button>
               </div>
             ) : (
-              <div className="text-white text-center">Список плагинов (В разработке)</div>
+              <div className="w-full grid grid-cols-2 gap-4 mt-4">
+                {/* Место для будущих карточек плагинов */}
+              </div>
             )}
           </div>
         )}
         
-        {activeTab === 'store' && <div className="text-white">Store View</div>}
-        {activeTab === 'socket' && <div className="text-white">Dev Socket</div>}
+        {activeTab === 'store' && <div className="text-white text-center mt-20">Store Coming Soon</div>}
+        {activeTab === 'socket' && <div className="text-white text-center mt-20">Developer Socket</div>}
       </div>
 
-      {/* Твой Таббар */}
       <div className="t-wrap">
         <div className="tbar">
           <div className="slid" style={{ cssText: getSliderPos() }} />
