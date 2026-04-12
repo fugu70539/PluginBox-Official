@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --bg: #000;
   --t-bg: rgba(25, 25, 27, 0.96);
@@ -6,15 +10,36 @@
   --pill: rgba(255, 255, 255, 0.1);
 }
 
+/* Базовые настройки для всего приложения */
 body {
+  background-color: var(--bg);
+  color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* Стили для Welcome-экрана */
 .white-glass-button {
   background: linear-gradient(180deg, #ffffff 0%, #e2e2e2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
   @apply active:scale-95 transition-transform duration-200;
 }
 
+/* Стеклянные карточки (Hub Empty State) */
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Навигационный бар (Tabbar) */
 .t-wrap {
   position: fixed;
   bottom: calc(30px + env(safe-area-inset-bottom));
@@ -50,9 +75,12 @@ body {
   outline: none;
   color: var(--inact);
   transition: color 0.2s ease;
+  cursor: pointer;
 }
 
-.t-item.active { color: var(--act); }
+.t-item.active { 
+  color: var(--act); 
+}
 
 .t-txt { 
   font-size: 10px;
@@ -62,6 +90,7 @@ body {
   margin-top: 2px;
 }
 
+/* Слайдер-пилюля */
 .slid {
   position: absolute;
   top: 4px;
@@ -69,5 +98,10 @@ body {
   background: var(--pill);
   border-radius: 30px;
   z-index: 1;
-  transition: left 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Убираем стандартные стили кнопок в Safari */
+button {
+  -webkit-tap-highlight-color: transparent;
 }
