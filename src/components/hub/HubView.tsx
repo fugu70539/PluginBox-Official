@@ -5,11 +5,13 @@ import { useStore } from '@/store/useStore';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 
+// Загружаем Lottie только на клиенте
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
-import hubIcon from '../../../public/Icons/Hub.json';
-import storeIcon from '../../../public/Icons/Store.json';
-import socketIcon from '../../../public/Icons/Socket.json';
+// Импорты через корневой путь (убедись, что файлы реально лежат в public/Icons/)
+import hubIcon from '/public/Icons/Hub.json';
+import storeIcon from '/public/Icons/Store.json';
+import socketIcon from '/public/Icons/Socket.json';
 
 type Tab = 'hub' | 'store' | 'socket';
 
@@ -18,7 +20,7 @@ export default function HubView() {
   const { user, setUser } = useStore();
   
   useEffect(() => {
-    const tg = window?.Telegram?.WebApp;
+    const tg = typeof window !== 'undefined' ? (window as any).Telegram?.WebApp : null;
     if (tg) {
       tg.ready();
       tg.expand();
@@ -30,7 +32,7 @@ export default function HubView() {
           id: tgUser.id.toString(),
           username: tgUser.username || 'user',
           firstName: tgUser.first_name,
-          photoUrl: tgUser.photo_url, // API для фото
+          photoUrl: tgUser.photo_url,
           plan: user?.plan || 'Free',
           activePlugins: user?.activePlugins || []
         });
@@ -50,7 +52,6 @@ export default function HubView() {
   return (
     <div className="flex-1 flex flex-col relative bg-black overflow-hidden h-screen">
       
-      {/* HEADER: Динамический отступ под челку + 50px зазора */}
       <div style={{ paddingTop: 'calc(env(safe-area-inset-top) + 50px)' }} className="px-6 flex items-center justify-between w-full z-10">
         <div className="flex items-center gap-3">
           <div className="relative w-9 h-9 overflow-hidden rounded-xl">
@@ -75,7 +76,6 @@ export default function HubView() {
         </div>
       </div>
 
-      {/* SEARCH AREA */}
       <div className="px-6 mt-6 flex gap-2 w-full z-10">
         <div className="flex-1 h-11 glass-card rounded-full flex items-center px-4 gap-3">
           <svg className="w-4 h-4 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,7 +95,6 @@ export default function HubView() {
         </div>
       </div>
 
-      {/* CENTERED EMPTY STATE */}
       <div className="flex-1 flex flex-col px-6 justify-center pb-20">
         {activeTab === 'hub' && (
           <div className="w-full">
@@ -124,7 +123,6 @@ export default function HubView() {
         {activeTab === 'socket' && <div className="text-white/30 text-center">Socket ready</div>}
       </div>
 
-      {/* TABBAR */}
       <div className="t-wrap">
         <div className="tbar">
           <div className="slid" style={getSliderStyle()} />
@@ -137,12 +135,11 @@ export default function HubView() {
   );
 }
 
-// Мини-компонент для кнопки таббара
 function TabItem({ icon, label, isActive, onClick }: { icon: any, label: string, isActive: boolean, onClick: () => void }) {
   return (
     <button onClick={onClick} className={`t-item ${isActive ? 'active' : ''}`}>
       <div className="w-6 h-6">
-        <Lottie animationData={icon} loop={isActive} />
+        {icon && <Lottie animationData={icon} loop={isActive} />}
       </div>
       <span className="text-[10px] font-medium mt-1">{label}</span>
     </button>
