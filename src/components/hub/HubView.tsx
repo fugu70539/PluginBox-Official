@@ -5,13 +5,7 @@ import { useStore } from '@/store/useStore';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 
-// Загружаем Lottie только на клиенте
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
-
-// Импорты через корневой путь (убедись, что файлы реально лежат в public/Icons/)
-import hubIcon from '/public/Icons/Hub.json';
-import storeIcon from '/public/Icons/Store.json';
-import socketIcon from '/public/Icons/Socket.json';
 
 type Tab = 'hub' | 'store' | 'socket';
 
@@ -19,12 +13,15 @@ export default function HubView() {
   const [activeTab, setActiveTab] = useState<Tab>('hub');
   const { user, setUser } = useStore();
   
+  // Состояния для хранения данных анимаций
+  const [icons, setIcons] = useState<Record<string, any>>({});
+
   useEffect(() => {
+    // 1. Настройка Telegram
     const tg = typeof window !== 'undefined' ? (window as any).Telegram?.WebApp : null;
     if (tg) {
       tg.ready();
       tg.expand();
-      
       const tgUser = tg.initDataUnsafe?.user;
       if (tgUser) {
         setUser({
@@ -38,6 +35,21 @@ export default function HubView() {
         });
       }
     }
+
+    // 2. Загрузка иконок через fetch (безопасно для билда)
+    const loadIcons = async () => {
+      try {
+        const [hub, store, socket] = await Promise.all([
+          fetch('/Icons/Hub.json').then(res => res.json()),
+          fetch('/Icons/Store.json').then(res => res.json()),
+          fetch('/Icons/Socket.json').then(res => res.json())
+        ]);
+        setIcons({ hub, store, socket });
+      } catch (e) {
+        console.error("Ошибка загрузки иконок:", e);
+      }
+    };
+    loadIcons();
   }, []);
 
   const hasPlugins = user?.activePlugins?.length > 0;
@@ -52,6 +64,7 @@ export default function HubView() {
   return (
     <div className="flex-1 flex flex-col relative bg-black overflow-hidden h-screen">
       
+      {/* HEADER */}
       <div style={{ paddingTop: 'calc(env(safe-area-inset-top) + 50px)' }} className="px-6 flex items-center justify-between w-full z-10">
         <div className="flex items-center gap-3">
           <div className="relative w-9 h-9 overflow-hidden rounded-xl">
@@ -76,6 +89,7 @@ export default function HubView() {
         </div>
       </div>
 
+      {/* SEARCH AREA */}
       <div className="px-6 mt-6 flex gap-2 w-full z-10">
         <div className="flex-1 h-11 glass-card rounded-full flex items-center px-4 gap-3">
           <svg className="w-4 h-4 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,6 +109,7 @@ export default function HubView() {
         </div>
       </div>
 
+      {/* CONTENT */}
       <div className="flex-1 flex flex-col px-6 justify-center pb-20">
         {activeTab === 'hub' && (
           <div className="w-full">
@@ -123,12 +138,13 @@ export default function HubView() {
         {activeTab === 'socket' && <div className="text-white/30 text-center">Socket ready</div>}
       </div>
 
+      {/* TABBAR */}
       <div className="t-wrap">
         <div className="tbar">
           <div className="slid" style={getSliderStyle()} />
-          <TabItem icon={hubIcon} label="Hub" isActive={activeTab === 'hub'} onClick={() => setActiveTab('hub')} />
-          <TabItem icon={storeIcon} label="Store" isActive={activeTab === 'store'} onClick={() => setActiveTab('store')} />
-          <TabItem icon={socketIcon} label="Socket" isActive={activeTab === 'socket'} onClick={() => setActiveTab('socket')} />
+          <TabItem icon={icons.hub} label="Hub" isActive={activeTab === 'hub'} onClick={() => setActiveTab('hub')} />
+          <TabItem icon={icons.store} label="Store" isActive={activeTab === 'store'} onClick={() => setActiveTab('store')} />
+          <TabItem icon={icons.socket} label="Socket" isActive={activeTab === 'socket'} onClick={() => setActiveTab('socket')} />
         </div>
       </div>
     </div>
