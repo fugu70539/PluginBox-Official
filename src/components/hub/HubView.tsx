@@ -11,7 +11,6 @@ export default function HubView() {
   const { user } = useStore();
   const hasPlugins = user?.activePlugins?.length ? user.activePlugins.length > 0 : false;
 
-  // Исправленная логика слайдера для 3-х элементов
   const getSliderStyle = () => {
     const step = 100 / 3;
     let shift = 0;
@@ -26,7 +25,6 @@ export default function HubView() {
 
   return (
     <div className="flex-1 flex flex-col relative bg-black overflow-hidden h-screen">
-      {/* HEADER AREA */}
       <div className="pt-4 px-6 flex items-center justify-between w-full">
         <div className="flex items-center gap-2">
           <div className="relative w-8 h-8 overflow-hidden rounded-lg">
@@ -39,14 +37,12 @@ export default function HubView() {
         </div>
         
         <div className="w-10 h-10 rounded-xl border border-white/10 overflow-hidden relative">
-          {/* Здесь будет аватарка юзера из Telegram */}
-          <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center text-xs">
-            {user?.name?.charAt(0) || 'U'}
+          <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center text-xs font-bold text-white">
+            {(user?.firstName || user?.username || 'U').charAt(0).toUpperCase()}
           </div>
         </div>
       </div>
 
-      {/* SEARCH & FILTER AREA */}
       <div className="px-6 mt-6 flex gap-2 w-full">
         <div className="flex-1 h-10 glass-card rounded-full flex items-center px-4 gap-2">
           <svg className="w-4 h-4 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -66,7 +62,6 @@ export default function HubView() {
         </div>
       </div>
 
-      {/* MAIN CONTENT (HUB) */}
       <div className="flex-1 flex flex-col px-6 mt-4 overflow-y-auto pb-40">
         {activeTab === 'hub' && (
           <div className="w-full">
@@ -93,7 +88,7 @@ export default function HubView() {
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-4">
-                {/* Список плагинов появится здесь */}
+                {/* Plugins will be here */}
               </div>
             )}
           </div>
@@ -103,7 +98,6 @@ export default function HubView() {
         {activeTab === 'socket' && <div className="text-white/40 text-center mt-10">Waiting for connection...</div>}
       </div>
 
-      {/* NAVIGATION BAR */}
       <div className="t-wrap">
         <div className="tbar">
           <div className="slid" style={getSliderStyle()} />
