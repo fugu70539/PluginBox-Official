@@ -4,7 +4,7 @@
 
 :root {
   --bg: #000;
-  --t-bg: rgba(25, 25, 27, 0.7); /* Прозрачность 0.7 для таббара */
+  --t-bg: rgba(25, 25, 27, 0.75);
   --act: #ffffff;
   --inact: #8e8e93;
   --pill: rgba(255, 255, 255, 0.1);
@@ -20,12 +20,19 @@ body {
   -webkit-font-smoothing: antialiased;
   user-select: none;
   -webkit-user-select: none;
-  -webkit-touch-callout: none;
   overflow: hidden;
   position: fixed;
   width: 100%;
   height: 100%;
-  overscroll-behavior: none;
+}
+
+/* Ультра-чистое стекло */
+.glass-card {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(25px) saturate(200%);
+  -webkit-backdrop-filter: blur(25px) saturate(200%);
+  /* Тончайший контур 0.5px */
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
 }
 
 .white-glass-button {
@@ -35,27 +42,17 @@ body {
   justify-content: center;
   color: #000;
   border-radius: 9999px;
-  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
   @apply active:scale-95 transition-transform duration-200;
 }
 
-/* Улучшенное стекло */
-.glass-card {
-  background: rgba(255, 255, 255, 0.05); /* Очень легкий фон */
-  backdrop-filter: blur(25px) saturate(180%);
-  -webkit-backdrop-filter: blur(25px) saturate(180%);
-  border: 0.5px solid rgba(255, 255, 255, 0.12); /* Тончайший контур */
-}
-
 .plan-badge {
-  background-color: rgba(0, 122, 255, 0.15);
-  padding: 2px 6px;
+  background-color: rgba(0, 122, 255, 0.18);
+  padding: 2px 7px;
   border-radius: 6px;
-  font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
+  font-family: "Arial Rounded MT Bold", sans-serif;
   color: var(--apple-blue);
-  font-size: 9px;
-  text-transform: uppercase;
-  font-weight: bold;
+  font-size: 10px;
+  font-weight: 700;
 }
 
 .t-wrap {
@@ -70,12 +67,12 @@ body {
 .tbar {
   position: relative;
   background: var(--t-bg);
-  backdrop-filter: blur(30px) saturate(210%);
-  -webkit-backdrop-filter: blur(30px) saturate(210%);
-  border-radius: 30px;
+  backdrop-filter: blur(40px) saturate(210%);
+  -webkit-backdrop-filter: blur(40px) saturate(210%);
+  border-radius: 32px;
   display: flex;
   padding: 4px;
-  width: 90%;
+  width: 92%;
   max-width: 400px;
   border: 0.5px solid rgba(255, 255, 255, 0.08);
   height: 64px;
@@ -92,7 +89,6 @@ body {
   justify-content: center;
   background: none;
   border: none;
-  outline: none;
   color: var(--inact);
   transition: all 0.2s ease;
 }
@@ -104,17 +100,9 @@ body {
   top: 4px;
   height: calc(100% - 8px);
   background: var(--pill);
-  border-radius: 26px;
+  border-radius: 28px;
   z-index: 1;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-button, a {
-  -webkit-tap-highlight-color: transparent;
-  outline: none;
-}
-
-input {
-  user-select: text;
-  -webkit-user-select: text;
-}
+input { user-select: text; -webkit-user-select: text; }
