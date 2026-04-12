@@ -9,7 +9,9 @@ type Tab = 'hub' | 'store' | 'socket';
 export default function HubView() {
   const [activeTab, setActiveTab] = useState<Tab>('hub');
   const { user } = useStore();
-  const hasPlugins = user?.activePlugins?.length ? user.activePlugins.length > 0 : false;
+  
+  const hasPlugins = user?.activePlugins ? user.activePlugins.length > 0 : false;
+  const userPlan = user?.plan || 'Free';
 
   const getSliderStyle = () => {
     const step = 100 / 3;
@@ -25,6 +27,7 @@ export default function HubView() {
 
   return (
     <div className="flex-1 flex flex-col relative bg-black overflow-hidden h-screen">
+      {/* HEADER */}
       <div className="pt-4 px-6 flex items-center justify-between w-full">
         <div className="flex items-center gap-2">
           <div className="relative w-8 h-8 overflow-hidden rounded-lg">
@@ -32,7 +35,9 @@ export default function HubView() {
           </div>
           <h1 className="text-[20px] font-bold tracking-tight text-white">PluginBox</h1>
           <div className="bg-blue-500/50 backdrop-blur-md px-2 py-0.5 rounded-md">
-            <span className="text-[10px] font-medium uppercase tracking-wider text-white/90">Free</span>
+            <span className="text-[10px] font-medium uppercase tracking-wider text-white/90">
+              {userPlan}
+            </span>
           </div>
         </div>
         
@@ -43,6 +48,7 @@ export default function HubView() {
         </div>
       </div>
 
+      {/* SEARCH */}
       <div className="px-6 mt-6 flex gap-2 w-full">
         <div className="flex-1 h-10 glass-card rounded-full flex items-center px-4 gap-2">
           <svg className="w-4 h-4 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -54,7 +60,7 @@ export default function HubView() {
             className="bg-transparent border-none outline-none text-[14px] text-white placeholder:text-white/40 w-full"
           />
         </div>
-        <div className="h-10 px-4 glass-card rounded-xl flex items-center gap-2 active:scale-95 transition-transform">
+        <div className="h-10 px-4 glass-card rounded-xl flex items-center gap-2 active:scale-95 transition-transform cursor-pointer">
           <span className="text-[13px] font-medium text-white/80 whitespace-nowrap">All Plugs</span>
           <svg className="w-3 h-3 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
@@ -62,6 +68,7 @@ export default function HubView() {
         </div>
       </div>
 
+      {/* CONTENT */}
       <div className="flex-1 flex flex-col px-6 mt-4 overflow-y-auto pb-40">
         {activeTab === 'hub' && (
           <div className="w-full">
@@ -88,7 +95,7 @@ export default function HubView() {
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-4">
-                {/* Plugins will be here */}
+                {/* Plugin items would go here */}
               </div>
             )}
           </div>
@@ -98,6 +105,7 @@ export default function HubView() {
         {activeTab === 'socket' && <div className="text-white/40 text-center mt-10">Waiting for connection...</div>}
       </div>
 
+      {/* TABBAR */}
       <div className="t-wrap">
         <div className="tbar">
           <div className="slid" style={getSliderStyle()} />
