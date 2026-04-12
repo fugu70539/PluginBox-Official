@@ -9,17 +9,18 @@ type Tab = 'hub' | 'store' | 'socket';
 export default function HubView() {
   const [activeTab, setActiveTab] = useState<Tab>('hub');
   const { user } = useStore();
-  const hasPlugins = user?.activePlugins.length ? user.activePlugins.length > 0 : false;
+  const hasPlugins = user?.activePlugins?.length ? user.activePlugins.length > 0 : false;
 
-  const getSliderPos = () => {
-    if (activeTab === 'hub') return 'left: 4px; width: 32%;';
-    if (activeTab === 'store') return 'left: 34%; width: 32%;';
-    return 'left: 64%; width: 32%;';
+  // Исправленная функция: возвращаем объект стилей
+  const getSliderStyle = () => {
+    if (activeTab === 'hub') return { left: '4px', width: '32%' };
+    if (activeTab === 'store') return { left: '34%', width: '32%' };
+    return { left: '64%', width: '32%' };
   };
 
   return (
     <div className="flex-1 flex flex-col relative bg-black overflow-hidden">
-      <div className="flex-1 flex flex-col p-6 overflow-y-auto pb-32">
+      <div className="flex-1 flex flex-col p-6 overflow-y-auto pb-32 text-white font-sans">
         {activeTab === 'hub' && (
           <div className="w-full flex flex-col items-center">
             {!hasPlugins ? (
@@ -33,7 +34,7 @@ export default function HubView() {
                     className="object-contain" 
                   />
                 </div>
-                <h2 className="text-2xl font-bold text-white mb-3">Your Hub is Empty</h2>
+                <h2 className="text-2xl font-bold mb-3">Your Hub is Empty</h2>
                 <p className="text-white/40 text-[15px] leading-relaxed max-w-[240px]">
                   Explore the Store to find and install your first plugins.
                 </p>
@@ -45,8 +46,8 @@ export default function HubView() {
                 </button>
               </div>
             ) : (
-              <div className="w-full grid grid-cols-2 gap-4 mt-4">
-                {/* Место для будущих карточек плагинов */}
+              <div className="w-full grid grid-cols-2 gap-4 mt-4 text-white">
+                Plugins list coming soon...
               </div>
             )}
           </div>
@@ -58,7 +59,8 @@ export default function HubView() {
 
       <div className="t-wrap">
         <div className="tbar">
-          <div className="slid" style={{ cssText: getSliderPos() }} />
+          {/* Исправленный вызов стилей */}
+          <div className="slid" style={getSliderStyle()} />
           
           <button 
             onClick={() => setActiveTab('hub')}
