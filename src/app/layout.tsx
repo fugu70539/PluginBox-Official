@@ -1,6 +1,5 @@
+import "./globals.css"; // ПРОВЕРЬ ЭТУ СТРОКУ
 import type { Metadata } from "next";
-import Script from "next/script";
-import "./globals.css";
 
 export const metadata: Metadata = {
   title: "PluginBox",
@@ -15,16 +14,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <Script
-          src="https://telegram.org/js/telegram-web-app.js"
-          strategy="beforeInteractive"
-        />
+        <script src="https://telegram.org/js/telegram-web-app.js" async />
       </head>
-      <body className="antialiased bg-black text-white overflow-hidden">
-        <main className="h-screen w-full flex flex-col">
-          {children}
-        </main>
-      </body>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }
