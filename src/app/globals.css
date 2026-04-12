@@ -10,7 +10,7 @@
   --pill: rgba(255, 255, 255, 0.1);
 }
 
-/* Базовые настройки для всего приложения */
+/* Базовые настройки для эффекта "Native App" */
 body {
   background-color: var(--bg);
   color: #fff;
@@ -18,7 +18,19 @@ body {
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  
+  /* 1. Запрет выделения текста и объектов */
+  user-select: none;
+  -webkit-user-select: none;
+  
+  /* 2. Запрет системных тапов и вызовов меню (Safari/Chrome) */
+  -webkit-touch-callout: none;
+  
+  /* 3. Фиксация сайта (запрет скролла всей страницы, если контент не влезает) */
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
 }
 
 /* Стили для Welcome-экрана */
@@ -31,7 +43,7 @@ body {
   @apply active:scale-95 transition-transform duration-200;
 }
 
-/* Стеклянные карточки (Hub Empty State) */
+/* Стеклянные карточки */
 .glass-card {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(20px);
@@ -39,7 +51,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Навигационный бар (Tabbar) */
+/* Навигационный бар */
 .t-wrap {
   position: fixed;
   bottom: calc(30px + env(safe-area-inset-bottom));
@@ -78,9 +90,7 @@ body {
   cursor: pointer;
 }
 
-.t-item.active { 
-  color: var(--act); 
-}
+.t-item.active { color: var(--act); }
 
 .t-txt { 
   font-size: 10px;
@@ -90,7 +100,6 @@ body {
   margin-top: 2px;
 }
 
-/* Слайдер-пилюля */
 .slid {
   position: absolute;
   top: 4px;
@@ -101,7 +110,7 @@ body {
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Убираем стандартные стили кнопок в Safari */
-button {
+/* Фикс для предотвращения "резинового" скролла в Telegram */
+button, a {
   -webkit-tap-highlight-color: transparent;
 }
