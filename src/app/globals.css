@@ -4,17 +4,14 @@
 
 :root {
   --bg: #000;
-  --t-bg: rgba(25, 25, 27, 0.75);
+  --t-bg: rgba(18, 18, 18, 0.75);
   --act: #ffffff;
-  --inact: #8e8e93;
-  --pill: rgba(255, 255, 255, 0.1);
-  --apple-blue: #007AFF;
+  --inact: rgba(255, 255, 255, 0.3);
 }
 
 body {
   background-color: var(--bg);
   color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", sans-serif;
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
@@ -26,38 +23,9 @@ body {
   height: 100%;
 }
 
-/* Ультра-чистое стекло */
-.glass-card {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(25px) saturate(200%);
-  -webkit-backdrop-filter: blur(25px) saturate(200%);
-  /* Тончайший контур 0.5px */
-  border: 0.5px solid rgba(255, 255, 255, 0.1);
-}
-
-.white-glass-button {
-  background: linear-gradient(180deg, #ffffff 0%, #e2e2e2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #000;
-  border-radius: 9999px;
-  @apply active:scale-95 transition-transform duration-200;
-}
-
-.plan-badge {
-  background-color: rgba(0, 122, 255, 0.18);
-  padding: 2px 7px;
-  border-radius: 6px;
-  font-family: "Arial Rounded MT Bold", sans-serif;
-  color: var(--apple-blue);
-  font-size: 10px;
-  font-weight: 700;
-}
-
 .t-wrap {
   position: fixed;
-  bottom: calc(20px + env(safe-area-inset-bottom));
+  bottom: calc(24px + env(safe-area-inset-bottom));
   width: 100%;
   display: flex;
   justify-content: center;
@@ -67,14 +35,14 @@ body {
 .tbar {
   position: relative;
   background: var(--t-bg);
-  backdrop-filter: blur(40px) saturate(210%);
-  -webkit-backdrop-filter: blur(40px) saturate(210%);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
   border-radius: 32px;
   display: flex;
   padding: 4px;
-  width: 92%;
+  width: 90%;
   max-width: 400px;
-  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   height: 64px;
 }
 
@@ -89,20 +57,14 @@ body {
   justify-content: center;
   background: none;
   border: none;
-  color: var(--inact);
-  transition: all 0.2s ease;
 }
-
-.t-item.active { color: var(--act); }
 
 .slid {
   position: absolute;
   top: 4px;
   height: calc(100% - 8px);
-  background: var(--pill);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 28px;
   z-index: 1;
-  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
 }
-
-input { user-select: text; -webkit-user-select: text; }
