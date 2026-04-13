@@ -57,47 +57,53 @@ export default function HubView() {
   return (
     <div className="flex-1 flex flex-col relative bg-black overflow-hidden h-screen font-[family-name:var(--font-manrope)]">
       
-      <div className="absolute top-0 left-0 right-0 h-[52%] bg-[#121212] rounded-b-[40px] border-b border-white/[0.02] z-0" />
+      {/* ПЛАШКА ФОНА */}
+      <div className="absolute top-0 left-0 right-0 h-[55%] bg-[#121212] rounded-b-[40px] border-b border-white/[0.04] shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-0" />
 
       <div className="relative z-10 flex flex-col h-full">
         
+        {/* HEADER: Лого и текст в один ряд по центру оси X */}
         <div 
-          style={{ paddingTop: 'calc(env(safe-area-inset-top) + 40px)' }} 
-          className="px-6 flex flex-col items-center w-full"
+          style={{ paddingTop: 'calc(env(safe-area-inset-top) + 16px)' }} 
+          className="w-full flex justify-center items-center"
         >
-          <div className="flex flex-col items-center gap-4">
-             <div className="relative w-9 h-9">
+          <div className="flex items-center gap-2.5">
+             <div className="relative w-8 h-8 rounded-lg overflow-hidden">
                 <Image src="/Pics/BoxLogo.PNG" alt="Logo" fill className="object-cover" />
              </div>
-             <h1 className="text-[17px] font-semibold tracking-tight text-white/90">
+             <h1 className="text-[18px] font-semibold tracking-tight text-white/95">
                PluginBox
              </h1>
           </div>
         </div>
 
-        <div className="px-10 mt-14">
-          <button className="flex items-center gap-2 group">
-            <span className="text-[14px] font-medium text-white/40 group-active:text-white/80 transition-colors">
+        {/* ФИЛЬТР: Аккуратно прижат влево */}
+        <div className="px-6 mt-8">
+          <button className="flex items-center gap-2 px-3 py-1.5 -ml-3 rounded-full hover:bg-white/[0.03] transition-colors group">
+            <span className="text-[14px] font-medium text-white/50 group-active:text-white/80 transition-colors">
               All Plugins
             </span>
-            <svg className="w-3 h-3 text-white/10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-3.5 h-3.5 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
         </div>
 
+        {/* ЦЕНТР ПЛАШКИ: Контент хаба */}
         <div className="flex-1 flex flex-col items-center justify-center">
           {activeTab === 'hub' && (
-            <div className="relative w-24 h-24 opacity-[0.02] grayscale invert">
+            <div className="relative w-28 h-28 opacity-[0.03] grayscale invert">
               <Image src="/Pics/EmptyHub.PNG" alt="Empty" fill className="object-contain" />
             </div>
           )}
         </div>
 
-        <div className="h-[40%]" />
+        {/* ПУСТАЯ ЗОНА ВНИЗУ */}
+        <div className="h-[45%]" />
 
       </div>
 
+      {/* ТАББАР */}
       <div className="t-wrap">
         <div className="tbar">
           <div className="slid" style={getSliderStyle()} />
@@ -116,7 +122,7 @@ function TabItem({ icon, label, isActive, onClick }: { icon: any, label: string,
       <div className="w-[22px] h-[22px]">
         {icon && <Lottie animationData={icon} loop={isActive} />}
       </div>
-      <span className="text-[9px] font-bold mt-1.5 uppercase tracking-[0.05em]">{label}</span>
+      <span className="text-[10px] font-bold mt-1.5 uppercase tracking-[0.05em]">{label}</span>
     </button>
   );
 }
