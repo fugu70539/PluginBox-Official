@@ -48,8 +48,6 @@ export default function HubView() {
     loadIcons();
   }, []);
 
-  // ИСПРАВЛЕНИЕ ТУТ: Добавляем || 0, чтобы всегда было число
-  const hasPlugins = (user?.activePlugins?.length || 0) > 0;
   const userPlan = user?.plan || 'Free';
 
   const getSliderStyle = () => {
@@ -61,81 +59,65 @@ export default function HubView() {
   return (
     <div className="flex-1 flex flex-col relative bg-black overflow-hidden h-screen">
       
-      {/* HEADER с учетом Safe Area */}
-      <div style={{ paddingTop: 'calc(env(safe-area-inset-top) + 50px)' }} className="px-6 flex items-center justify-between w-full z-10">
-        <div className="flex items-center gap-3">
-          <div className="relative w-9 h-9 overflow-hidden rounded-xl">
-             <Image src="/Pics/BoxLogo.PNG" alt="Logo" fill className="object-cover" />
+      {/* НЕЙТРАЛЬНАЯ ПЛАШКА: От самого верха до середины */}
+      <div className="absolute top-0 left-0 right-0 h-[52%] bg-[#121212] rounded-b-[48px] border-b border-white/[0.03] z-0" />
+
+      {/* CONTENT LAYER */}
+      <div className="relative z-10 flex flex-col h-full">
+        
+        {/* HEADER: Центрированный логотип и название */}
+        <div style={{ paddingTop: 'calc(env(safe-area-inset-top) + 24px)' }} className="px-6 flex flex-col items-center">
+          <div className="flex items-center gap-2 mb-1">
+             <div className="relative w-6 h-6 opacity-90">
+                <Image src="/Pics/BoxLogo.PNG" alt="Logo" fill className="object-cover" />
+             </div>
+             <h1 className="text-lg font-medium tracking-tight text-white/90">PluginBox</h1>
           </div>
-          <div className="relative flex items-center">
-            <h1 className="text-[22px] font-bold tracking-tight text-white">PluginBox</h1>
-            <div className="plan-badge ml-2 uppercase">
-              {userPlan}
-            </div>
+          <div className="plan-badge !text-[9px] !py-0.5 opacity-60">
+            {userPlan}
           </div>
         </div>
-        
-        <div className="w-10 h-10 rounded-xl border border-white/10 overflow-hidden relative glass-card">
-          {user?.photoUrl ? (
-            <img src={user.photoUrl} alt="Avatar" className="w-full h-full object-cover" />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center text-[13px] font-bold text-white">
-              {(user?.firstName || user?.username || 'U').charAt(0).toUpperCase()}
+
+        {/* АВАТАРКА: Теперь она скромно в углу, не мешая композиции */}
+        <div className="absolute top-[calc(env(safe-area-inset-top)+20px)] right-6">
+          <div className="w-8 h-8 rounded-lg overflow-hidden border border-white/5 bg-[#1a1a1a]">
+            {user?.photoUrl ? (
+              <img src={user.photoUrl} alt="Avatar" className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-[11px] font-bold text-white/30">
+                {(user?.firstName || user?.username || 'U').charAt(0).toUpperCase()}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* ФИЛЬТР: Слева и ниже заголовка */}
+        <div className="px-6 mt-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/[0.03] border border-white/[0.05] rounded-full active:scale-95 transition-transform">
+            <span className="text-[13px] font-medium text-white/60">All Plugins</span>
+            <svg className="w-3 h-3 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
+
+        {/* ЦЕНТРАЛЬНАЯ ЗОНА (на плашке) */}
+        <div className="flex-1 flex flex-col items-center justify-center px-6">
+          {activeTab === 'hub' && (
+            <div className="relative w-32 h-32 opacity-20 grayscale">
+              <Image src="/Pics/EmptyHub.PNG" alt="Empty" fill className="object-contain" />
             </div>
           )}
         </div>
-      </div>
 
-      {/* SEARCH AREA */}
-      <div className="px-6 mt-6 flex gap-2 w-full z-10">
-        <div className="flex-1 h-11 glass-card rounded-full flex items-center px-4 gap-3">
-          <svg className="w-4 h-4 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <input 
-            type="text" 
-            placeholder="Search for plugins..." 
-            className="bg-transparent border-none outline-none text-[15px] text-white placeholder:text-white/30 w-full"
-          />
+        {/* ПУСТАЯ ЗОНА НИЖЕ ПЛАШКИ (нижняя половина экрана) */}
+        <div className="h-[40%] w-full flex items-start justify-center pt-10">
+           {/* Здесь пока пусто по твоему запросу */}
         </div>
-        <div className="h-11 px-5 glass-card rounded-full flex items-center gap-2 active:scale-95 transition-transform">
-          <span className="text-[14px] font-medium text-white/80">All</span>
-          <svg className="w-3 h-3 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
+
       </div>
 
-      {/* CONTENT */}
-      <div className="flex-1 flex flex-col px-6 justify-center pb-20">
-        {activeTab === 'hub' && (
-          <div className="w-full">
-            {!hasPlugins ? (
-              <div className="glass-card w-full rounded-[48px] flex flex-col items-center justify-center p-10 text-center">
-                <div className="relative w-40 h-40 mb-8">
-                  <Image src="/Pics/EmptyHub.PNG" alt="Empty" fill className="object-contain" />
-                </div>
-                <h2 className="text-2xl font-bold mb-3">Your Hub is Empty</h2>
-                <p className="text-white/40 text-[15px] leading-relaxed max-w-[240px]">
-                  Explore the Store to find and install your first plugins.
-                </p>
-                <button 
-                  onClick={() => setActiveTab('store')}
-                  className="white-glass-button mt-8 w-full py-4 font-bold text-[16px]"
-                >
-                  Browse Plugins
-                </button>
-              </div>
-            ) : (
-              <div className="text-center text-white/30">Plugin list here...</div>
-            )}
-          </div>
-        )}
-        {activeTab === 'store' && <div className="text-white/30 text-center">Store coming soon</div>}
-        {activeTab === 'socket' && <div className="text-white/30 text-center">Socket ready</div>}
-      </div>
-
-      {/* TABBAR */}
+      {/* TABBAR (Стеклянный для акцента на управлении) */}
       <div className="t-wrap">
         <div className="tbar">
           <div className="slid" style={getSliderStyle()} />
