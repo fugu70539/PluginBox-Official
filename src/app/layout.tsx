@@ -1,31 +1,27 @@
+import type { Metadata } from "next";
+import { Manrope } from "next/font/google";
 import "./globals.css";
-import type { Metadata, Viewport } from "next";
+
+const manrope = Manrope({
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-manrope",
+});
 
 export const metadata: Metadata = {
   title: "PluginBox",
-  description: "Telegram Plugin Hub",
-};
-
-// Это отключит масштабирование (зум)
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  description: "PluginBox Official",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en">
-      <head>
-        <script src="https://telegram.org/js/telegram-web-app.js" async />
-      </head>
-      {/* Класс overscroll-none — еще одна страховка от скролла */}
-      <body className="antialiased overscroll-none">{children}</body>
+      <body className={`${manrope.variable} font-sans antialiased`}>
+        {children}
+      </body>
     </html>
   );
 }
