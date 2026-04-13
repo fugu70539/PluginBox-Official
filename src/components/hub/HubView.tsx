@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useStore } from '@/store/useStore';
+import { PlanType } from '@/types';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 
@@ -26,6 +27,7 @@ export default function HubView() {
           id: tgUser.id.toString(),
           username: tgUser.username || 'user',
           firstName: tgUser.first_name,
+          plan: (user?.plan || 'Free') as PlanType,
           activePlugins: user?.activePlugins || []
         });
       }
@@ -40,7 +42,7 @@ export default function HubView() {
         ]);
         setIcons({ hub, store, socket });
       } catch (e) {
-        console.error("Lottie icons not found");
+        console.error("Icons failed");
       }
     };
     loadIcons();
@@ -55,17 +57,15 @@ export default function HubView() {
   return (
     <div className="flex-1 flex flex-col relative bg-black overflow-hidden h-screen font-[family-name:var(--font-manrope)]">
       
-      {/* ПАНЕЛЬ: Нейтральный фон, строгая геометрия */}
       <div className="absolute top-0 left-0 right-0 h-[52%] bg-[#121212] rounded-b-[40px] border-b border-white/[0.02] z-0" />
 
       <div className="relative z-10 flex flex-col h-full">
         
-        {/* HEADER: Центрирование по X, безопасный отступ сверху */}
         <div 
-          style={{ paddingTop: 'calc(env(safe-area-inset-top) + 32px)' }} 
+          style={{ paddingTop: 'calc(env(safe-area-inset-top) + 40px)' }} 
           className="px-6 flex flex-col items-center w-full"
         >
-          <div className="flex flex-col items-center gap-3">
+          <div className="flex flex-col items-center gap-4">
              <div className="relative w-9 h-9">
                 <Image src="/Pics/BoxLogo.PNG" alt="Logo" fill className="object-cover" />
              </div>
@@ -75,36 +75,32 @@ export default function HubView() {
           </div>
         </div>
 
-        {/* ФИЛЬТР: Слева, ниже, максимально лаконично */}
-        <div className="px-8 mt-12">
+        <div className="px-10 mt-14">
           <button className="flex items-center gap-2 group">
             <span className="text-[14px] font-medium text-white/40 group-active:text-white/80 transition-colors">
               All Plugins
             </span>
-            <svg className="w-3 h-3 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-3 h-3 text-white/10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
         </div>
 
-        {/* ЦЕНТРАЛЬНАЯ ЗОНА: Для контента на плашке */}
         <div className="flex-1 flex flex-col items-center justify-center">
           {activeTab === 'hub' && (
-            <div className="relative w-24 h-24 opacity-[0.03] grayscale invert">
+            <div className="relative w-24 h-24 opacity-[0.02] grayscale invert">
               <Image src="/Pics/EmptyHub.PNG" alt="Empty" fill className="object-contain" />
             </div>
           )}
         </div>
 
-        {/* ПУСТАЯ НИЖНЯЯ ЗОНА */}
         <div className="h-[40%]" />
 
       </div>
 
-      {/* ТАББАР: Оставляем легкое стекло, чтобы он «левитировал» над черным фоном */}
       <div className="t-wrap">
-        <div className="tbar border-white/[0.05]">
-          <div className="slid bg-white/[0.08]" style={getSliderStyle()} />
+        <div className="tbar">
+          <div className="slid" style={getSliderStyle()} />
           <TabItem icon={icons.hub} label="Hub" isActive={activeTab === 'hub'} onClick={() => setActiveTab('hub')} />
           <TabItem icon={icons.store} label="Store" isActive={activeTab === 'store'} onClick={() => setActiveTab('store')} />
           <TabItem icon={icons.socket} label="Socket" isActive={activeTab === 'socket'} onClick={() => setActiveTab('socket')} />
@@ -116,11 +112,11 @@ export default function HubView() {
 
 function TabItem({ icon, label, isActive, onClick }: { icon: any, label: string, isActive: boolean, onClick: () => void }) {
   return (
-    <button onClick={onClick} className={`t-item transition-all ${isActive ? 'text-white' : 'text-white/30'}`}>
+    <button onClick={onClick} className={`t-item transition-all duration-300 ${isActive ? 'text-white' : 'text-white/30'}`}>
       <div className="w-[22px] h-[22px]">
         {icon && <Lottie animationData={icon} loop={isActive} />}
       </div>
-      <span className="text-[10px] font-semibold mt-1.5 uppercase tracking-wider">{label}</span>
+      <span className="text-[9px] font-bold mt-1.5 uppercase tracking-[0.05em]">{label}</span>
     </button>
   );
 }
