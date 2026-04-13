@@ -26,8 +26,6 @@ export default function HubView() {
           id: tgUser.id.toString(),
           username: tgUser.username || 'user',
           firstName: tgUser.first_name,
-          photoUrl: tgUser.photo_url,
-          plan: user?.plan || 'Free',
           activePlugins: user?.activePlugins || []
         });
       }
@@ -48,8 +46,6 @@ export default function HubView() {
     loadIcons();
   }, []);
 
-  const userPlan = user?.plan || 'Free';
-
   const getSliderStyle = () => {
     const step = 100 / 3;
     const shift = activeTab === 'hub' ? 0 : activeTab === 'store' ? step : step * 2;
@@ -57,70 +53,58 @@ export default function HubView() {
   };
 
   return (
-    <div className="flex-1 flex flex-col relative bg-black overflow-hidden h-screen">
+    <div className="flex-1 flex flex-col relative bg-black overflow-hidden h-screen font-[family-name:var(--font-manrope)]">
       
-      {/* НЕЙТРАЛЬНАЯ ПЛАШКА: От самого верха до середины */}
-      <div className="absolute top-0 left-0 right-0 h-[52%] bg-[#121212] rounded-b-[48px] border-b border-white/[0.03] z-0" />
+      {/* ПАНЕЛЬ: Нейтральный фон, строгая геометрия */}
+      <div className="absolute top-0 left-0 right-0 h-[52%] bg-[#121212] rounded-b-[40px] border-b border-white/[0.02] z-0" />
 
-      {/* CONTENT LAYER */}
       <div className="relative z-10 flex flex-col h-full">
         
-        {/* HEADER: Центрированный логотип и название */}
-        <div style={{ paddingTop: 'calc(env(safe-area-inset-top) + 24px)' }} className="px-6 flex flex-col items-center">
-          <div className="flex items-center gap-2 mb-1">
-             <div className="relative w-6 h-6 opacity-90">
+        {/* HEADER: Центрирование по X, безопасный отступ сверху */}
+        <div 
+          style={{ paddingTop: 'calc(env(safe-area-inset-top) + 32px)' }} 
+          className="px-6 flex flex-col items-center w-full"
+        >
+          <div className="flex flex-col items-center gap-3">
+             <div className="relative w-9 h-9">
                 <Image src="/Pics/BoxLogo.PNG" alt="Logo" fill className="object-cover" />
              </div>
-             <h1 className="text-lg font-medium tracking-tight text-white/90">PluginBox</h1>
-          </div>
-          <div className="plan-badge !text-[9px] !py-0.5 opacity-60">
-            {userPlan}
-          </div>
-        </div>
-
-        {/* АВАТАРКА: Теперь она скромно в углу, не мешая композиции */}
-        <div className="absolute top-[calc(env(safe-area-inset-top)+20px)] right-6">
-          <div className="w-8 h-8 rounded-lg overflow-hidden border border-white/5 bg-[#1a1a1a]">
-            {user?.photoUrl ? (
-              <img src={user.photoUrl} alt="Avatar" className="w-full h-full object-cover" />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-[11px] font-bold text-white/30">
-                {(user?.firstName || user?.username || 'U').charAt(0).toUpperCase()}
-              </div>
-            )}
+             <h1 className="text-[17px] font-semibold tracking-tight text-white/90">
+               PluginBox
+             </h1>
           </div>
         </div>
 
-        {/* ФИЛЬТР: Слева и ниже заголовка */}
-        <div className="px-6 mt-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/[0.03] border border-white/[0.05] rounded-full active:scale-95 transition-transform">
-            <span className="text-[13px] font-medium text-white/60">All Plugins</span>
+        {/* ФИЛЬТР: Слева, ниже, максимально лаконично */}
+        <div className="px-8 mt-12">
+          <button className="flex items-center gap-2 group">
+            <span className="text-[14px] font-medium text-white/40 group-active:text-white/80 transition-colors">
+              All Plugins
+            </span>
             <svg className="w-3 h-3 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
             </svg>
-          </div>
+          </button>
         </div>
 
-        {/* ЦЕНТРАЛЬНАЯ ЗОНА (на плашке) */}
-        <div className="flex-1 flex flex-col items-center justify-center px-6">
+        {/* ЦЕНТРАЛЬНАЯ ЗОНА: Для контента на плашке */}
+        <div className="flex-1 flex flex-col items-center justify-center">
           {activeTab === 'hub' && (
-            <div className="relative w-32 h-32 opacity-20 grayscale">
+            <div className="relative w-24 h-24 opacity-[0.03] grayscale invert">
               <Image src="/Pics/EmptyHub.PNG" alt="Empty" fill className="object-contain" />
             </div>
           )}
         </div>
 
-        {/* ПУСТАЯ ЗОНА НИЖЕ ПЛАШКИ (нижняя половина экрана) */}
-        <div className="h-[40%] w-full flex items-start justify-center pt-10">
-           {/* Здесь пока пусто по твоему запросу */}
-        </div>
+        {/* ПУСТАЯ НИЖНЯЯ ЗОНА */}
+        <div className="h-[40%]" />
 
       </div>
 
-      {/* TABBAR (Стеклянный для акцента на управлении) */}
+      {/* ТАББАР: Оставляем легкое стекло, чтобы он «левитировал» над черным фоном */}
       <div className="t-wrap">
-        <div className="tbar">
-          <div className="slid" style={getSliderStyle()} />
+        <div className="tbar border-white/[0.05]">
+          <div className="slid bg-white/[0.08]" style={getSliderStyle()} />
           <TabItem icon={icons.hub} label="Hub" isActive={activeTab === 'hub'} onClick={() => setActiveTab('hub')} />
           <TabItem icon={icons.store} label="Store" isActive={activeTab === 'store'} onClick={() => setActiveTab('store')} />
           <TabItem icon={icons.socket} label="Socket" isActive={activeTab === 'socket'} onClick={() => setActiveTab('socket')} />
@@ -132,11 +116,11 @@ export default function HubView() {
 
 function TabItem({ icon, label, isActive, onClick }: { icon: any, label: string, isActive: boolean, onClick: () => void }) {
   return (
-    <button onClick={onClick} className={`t-item ${isActive ? 'active' : ''}`}>
-      <div className="w-6 h-6">
+    <button onClick={onClick} className={`t-item transition-all ${isActive ? 'text-white' : 'text-white/30'}`}>
+      <div className="w-[22px] h-[22px]">
         {icon && <Lottie animationData={icon} loop={isActive} />}
       </div>
-      <span className="text-[10px] font-medium mt-1">{label}</span>
+      <span className="text-[10px] font-semibold mt-1.5 uppercase tracking-wider">{label}</span>
     </button>
   );
 }
